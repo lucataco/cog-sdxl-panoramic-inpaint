@@ -1,0 +1,8 @@
+__pycache__
+.cog
+cog_sdxl
+embedding-cache
+lora-cache
+realesrgan
+sdxl-cache
+sdxl-inpaint-cache
