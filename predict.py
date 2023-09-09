@@ -47,9 +47,13 @@ class Predictor(BasePredictor):
     def predict(
         self,
         prompt: str = Input(description="Prompt", default="tron world"),
-        seed: int = Input(description="Generation seed. Select 0 or less for random", ge=0, le=2147483647, default=1335),
+        seed: int = Input(description="Leave blank to randomize the seed", default=None),
     ) -> Path:
         """Run a single prediction on the model"""
+        if seed is None:
+            seed = int.from_bytes(os.urandom(2), "big")
+        print(f"Using seed: {seed}")
+
         prompt_sdxl = prompt + " in the style of <s0><s1>";
         image = self.pipe(
             prompt_sdxl,
@@ -120,7 +124,7 @@ class Predictor(BasePredictor):
         width, height = image.size
         left = (width - height) // 2
         image.paste(inpaint, (left, 0))
-        # Save the swapped image at 1024x512
+        # Save the swapped image at 2048x1024
         image.save("6-final.png")
 
         return Path("6-final.png")
